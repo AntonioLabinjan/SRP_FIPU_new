@@ -8,11 +8,13 @@ def transform_elections_fact(
     dim_election_history_df,
     dim_party_df,
 ):
+    # Dohvati CSV tablicu (raw CSV input s headerima koje si naveo)
     csv_df = raw_data.get("ElectionData")
 
     if csv_df is None:
         raise ValueError("CSV podaci nisu pronađeni u raw_data!")
 
+    # Očisti i formatiraj CSV podatke
     cleaned_csv = (
         csv_df
         .withColumn("territoryName", initcap(trim(col("territoryName"))))
@@ -35,12 +37,13 @@ def transform_elections_fact(
         .withColumn("FinalMandates", col("FinalMandates").cast("int"))
     )
 
+    # Join s dim_party
     enriched_df = (
         cleaned_csv.alias("c")
         .join(dim_country_df.alias("co"), col("c.territoryName") == col("co.name"), "left")
         .join(dim_party_df.alias("p"), col("c.Party") == col("p.name"), "left")
-        .join(dim_election_df.alias("e"), col("co.country_tk") == col("e.country_tk"), "left")  #
-        .join(dim_election_history_df.alias("eh"), col("e.election_id") == col("eh.election_id"), "left")  
+        .join(dim_election_df.alias("e"), col("co.country_tk") == col("e.country_tk"), "left")  # možeš prilagoditi uvjet
+        .join(dim_election_history_df.alias("eh"), col("e.election_id") == col("eh.election_id"), "left")  # optional
     )
 
     fact_df = (
