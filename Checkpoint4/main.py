@@ -6,32 +6,39 @@ from spark_session import get_spark_session
 from load.run_loading import write_spark_df_to_mysql
 import os
 
+print("pokrenuli smo main.py")
 # Unset SPARK_HOME if it exists to prevent Spark session conflicts
 os.environ.pop("SPARK_HOME", None)
+print("ovo je ok")
 
 def main():
+    print("ušli smo u main")
     spark = get_spark_session()
+    if spark is None:
+        print("Spark session failed to initialize. Exiting.")
+        exit(1)
     spark.sparkContext.setLogLevel("ERROR")
     spark.catalog.clearCache()
 
     # Load data
-    print("🚀 Starting data extraction")
+    print("Starting data extraction")
     mysql_df = extract_all_tables()
-    csv_df = {"csv_sales":extract_from_csv("Checkpoint2/processed/ElectionData_PROCESSED_20.csv")}
+    print("path for csv trying to be found")
+    csv_df = {"csv_sales":extract_from_csv("C:/Users/Korisnik/Desktop/Skladista_rudarenje_podataka_projekt-master/ElectionData_PROCESSED_20.csv")}
 
     merged_df = {**mysql_df, **csv_df}
-    print("✅ Data extraction completed")
+    print("Data extraction completed")
 
     # Transform data
-    print("🚀 Starting data transformation")
+    print("Starting data transformation")
     load_ready_dict = run_transformations(merged_df)
-    print("✅ Data transformation completed")
+    print("Data transformation completed")
 
     # Load data
-    print("🚀 Starting data loading")
+    print("Starting data loading")
     for table_name, df in load_ready_dict.items():
         write_spark_df_to_mysql(df, table_name)
-    print("👏 Data loading completed")
+    print("Data loading completed")
 
 if __name__ == "__main__":
     main()
