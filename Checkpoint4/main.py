@@ -6,13 +6,16 @@ from spark_session import get_spark_session
 from load.run_loading import write_spark_df_to_mysql
 import os
 
+
+
+
 print("pokrenuli smo main.py")
 # Unset SPARK_HOME if it exists to prevent Spark session conflicts
 os.environ.pop("SPARK_HOME", None)
 print("ovo je ok")
 
 def main():
-    print("ušli smo u main")
+    print("usli smo u main")
     spark = get_spark_session()
     if spark is None:
         print("Spark session failed to initialize. Exiting.")
