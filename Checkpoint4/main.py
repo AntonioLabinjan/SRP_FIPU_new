@@ -5,6 +5,8 @@ from transform.pipeline import run_transformations
 from spark_session import get_spark_session
 from load.run_loading import write_spark_df_to_mysql
 import os
+from pyspark.sql.functions import to_timestamp
+
 
 
 
@@ -14,9 +16,15 @@ print("pokrenuli smo main.py")
 os.environ.pop("SPARK_HOME", None)
 print("ovo je ok")
 
+
+
 def main():
+    
+  
+
     print("usli smo u main")
     spark = get_spark_session()
+    spark.conf.set("spark.sql.legacy.timeParserPolicy", "LEGACY")
     if spark is None:
         print("Spark session failed to initialize. Exiting.")
         exit(1)
