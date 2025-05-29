@@ -1,1 +1,1 @@
-Obavezno hitit selectove iz tabela unutra
+Obavezno hitit selectove iz tabela unutra i napisat spark dio
