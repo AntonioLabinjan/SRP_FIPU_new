@@ -1,1 +1,1 @@
-Obavezno hitit selectove iz tabela unutra i napisat spark dio
+Triba pasat sav spark kod, objasnit ga; napisat zaključak i reference i PPT napravit
