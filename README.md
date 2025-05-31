@@ -1,1 +1,1 @@
-triba napisat zaključak i reference i PPT napravit
+triba napisat reference i PPT napravit
